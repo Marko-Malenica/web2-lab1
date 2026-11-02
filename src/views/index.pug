@@ -1,0 +1,34 @@
+html
+    head
+        title Passes
+    body
+        h1 Passes
+        p Total passes: #{total}
+        p Active passes: #{active}
+        if username
+            p Logged in as #{username}
+            form(action='/logout', method='post')
+                input(type='submit', value='Logout')
+            table(border='1')
+                tr
+                    th ID
+                    th Name
+                    th Document
+                    th Issued at
+                    th Status
+                    th
+                each pass in passes
+                    tr
+                        td: a(href='/info/' + pass.id) #{pass.id}
+                        td #{pass.name}
+                        td #{pass.document}
+                        td #{pass.issuedAt.toISOString()}
+                        td #{pass.status}
+                        td
+                            if pass.status === 'ACTIVE'
+                                form(action='/passes/' + pass.id + '/cancel', method='post')
+                                    input(type='submit', value='Cancel')
+                            form(action='/passes/' + pass.id + '/delete', method='post')
+                                input(type='submit', value='Delete')
+        else
+            a(href='/login') Login
